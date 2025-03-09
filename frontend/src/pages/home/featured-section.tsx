@@ -1,5 +1,6 @@
 import { FeaturedGridSkeleton } from "@/components/skeletons/featured-grid-skeleton";
 import { useMusicStore } from "@/stores/useMusicStore";
+import { PlayButton } from "./play-button";
 
 export const FeaturedSection = () => {
   const { isLoading, featuredSongs, error } = useMusicStore();
@@ -7,12 +8,14 @@ export const FeaturedSection = () => {
   if (isLoading) return <FeaturedGridSkeleton />;
 
   if (error) return <p className="text-red-500 mb-4 text-lg">{error}</p>;
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
       {featuredSongs.map((song) => (
         <div
           key={song._id}
-          className="flex items-center bg-zinc-800/50 rounded-md overflow-hidden hover:bg-zinc-700/50 transition-colors group cursor-pointer relative"
+          className="flex items-center bg-zinc-800/50 rounded-md overflow-hidden
+         hover:bg-zinc-700/50 transition-colors group cursor-pointer relative"
         >
           <img
             src={song.imageUrl}
@@ -23,6 +26,7 @@ export const FeaturedSection = () => {
             <p className="font-medium truncate">{song.title}</p>
             <p className="text-sm text-zinc-400 truncate">{song.artist}</p>
           </div>
+          <PlayButton song={song} />
         </div>
       ))}
     </div>

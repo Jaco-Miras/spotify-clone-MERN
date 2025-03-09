@@ -9,7 +9,7 @@ interface PlayerStore {
 
   initializeQueue: (songs: Song[]) => void;
   playAlbum: (songs: Song[], startIndex?: number) => void;
-  setCurrentSong: (song: Song) => void;
+  setCurrentSong: (song: Song | null) => void;
   togglePlay: () => void;
   playNext: () => void;
   playPrev: () => void;
@@ -55,11 +55,12 @@ export const usePlayerStore = create<PlayerStore>((set, get) => ({
   },
 
   togglePlay: () => {
-    const willPlay = !get().isPlaying;
-
-    set({ isPlaying: willPlay });
+    set((state) => {
+      console.log("Before Toggle:", state);
+      return { isPlaying: !state.isPlaying };
+    });
+    console.log("After Toggle:", get().isPlaying);
   },
-
   playNext: () => {
     const { queue, currentIndex } = get();
     const nextIndex = currentIndex + 1;

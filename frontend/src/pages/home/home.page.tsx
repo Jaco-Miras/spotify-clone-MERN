@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { FeaturedSection } from "./featured-section";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SectionGrid } from "./section-grid";
+import { usePlayerStore } from "@/stores/usePlayerStore";
+import { all } from "axios";
 
 export const HomePage = () => {
   const [greeting, setGreeting] = useState("");
@@ -18,11 +20,24 @@ export const HomePage = () => {
     trendingSongs,
   } = useMusicStore();
 
+  const { initializeQueue } = usePlayerStore();
+
   useEffect(() => {
     fetchFeaturedSongs();
     fetchMadeForYouSongs();
     fetchTrendingSongs();
   }, [fetchFeaturedSongs, fetchMadeForYouSongs, fetchTrendingSongs]);
+
+  useEffect(() => {
+    if (
+      madeForYouSongs.length > 0 &&
+      featuredSongs.length > 0 &&
+      trendingSongs.length > 0
+    ) {
+      const allSongs = [...featuredSongs, ...madeForYouSongs, ...trendingSongs];
+      initializeQueue(allSongs);
+    }
+  }, [initializeQueue, madeForYouSongs, featuredSongs, trendingSongs]);
 
   useEffect(() => {
     const updateGreeting = () => {
@@ -41,7 +56,6 @@ export const HomePage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  console.log(madeForYouSongs, featuredSongs, trendingSongs);
   return (
     <div className="rounded-md overflow-hidden h-full bg-gradient-to-b from-zinc-800 to-zinc-900">
       <Topbar />
