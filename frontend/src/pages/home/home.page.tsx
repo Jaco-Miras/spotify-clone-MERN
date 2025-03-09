@@ -5,7 +5,6 @@ import { FeaturedSection } from "./featured-section";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SectionGrid } from "./section-grid";
 import { usePlayerStore } from "@/stores/usePlayerStore";
-import { all } from "axios";
 
 export const HomePage = () => {
   const [greeting, setGreeting] = useState("");
